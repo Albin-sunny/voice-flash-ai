@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Flashcard Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ── Header ── -->
+    <header>
+        <h1>🎓 Voice Flashcard Quiz</h1>
+        <p>Upload your notes — AI will quiz you!</p>
+    </header>
+
+    <!-- ── Main Container ── -->
+    <main>
+
+        <!-- ══ STEP 1: Upload Notes ══ -->
+        <section id="section-upload" class="card active">
+            <h2>📚 Step 1: Add Your Notes</h2>
+
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('file')">📄 Upload File</button>
+                <button class="tab-btn" onclick="switchTab('text')">✍️ Type Notes</button>
+            </div>
+
+            <!-- File Upload Tab -->
+            <div id="tab-file" class="tab-content active">
+                <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+                    <p>📁 Click to upload PDF or TXT file</p>
+                    <input type="file" id="file-input" accept=".pdf,.txt" hidden onchange="handleFileUpload()">
+                </div>
+                <div id="upload-status"></div>
+            </div>
+
+            <!-- Type Notes Tab -->
+            <div id="tab-text" class="tab-content">
+                <textarea id="typed-notes" placeholder="Paste or type your study notes here..." rows="8"></textarea>
+                <button class="btn-primary" onclick="saveTypedNotes()">💾 Save Notes</button>
+            </div>
+
+            <div id="notes-preview" class="hidden">
+                <p class="success-text">✅ Notes loaded! <span id="notes-char-count"></span> characters</p>
+                <button class="btn-primary" onclick="goToStep2()">Next: Generate Flashcards →</button>
+            </div>
+        </section>
+
+        <!-- ══ STEP 2: Generate Flashcards ══ -->
+        <section id="section-flashcards" class="card hidden">
+            <h2>🧠 Step 2: Generate Flashcards</h2>
+
+            <div class="slider-container">
+                <label>How many flashcards? <strong id="num-cards-display">3</strong></label>
+                <input type="range" id="num-cards" min="3" max="10" value="3"
+                    oninput="document.getElementById('num-cards-display').textContent = this.value">
+            </div>
+
+            <button class="btn-primary" onclick="generateFlashcards()">✨ Generate Flashcards</button>
+
+            <div id="flashcard-status"></div>
+
+            <div id="flashcard-preview" class="hidden">
+                <h3>👀 Preview</h3>
+                <div id="flashcard-list"></div>
+                <button class="btn-primary" onclick="startQuiz()">🚀 Start Quiz!</button>
+            </div>
+        </section>
+
+        <!-- ══ STEP 3: Quiz ══ -->
+        <section id="section-quiz" class="card hidden">
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="progress-text" class="progress-text"></p>
+
+            <h2 id="quiz-question"></h2>
+
+            <div class="quiz-actions">
+                <button class="btn-secondary" onclick="readQuestionAloud()">🔊 Read Question Aloud</button>
+                <audio id="question-audio" controls class="hidden"></audio>
+            </div>
+
+            <div class="answer-section">
+                <h3>🎤 Your Answer</h3>
+                <div class="record-buttons">
+                    <button class="btn-record" id="btn-start" onclick="startRecording()">🔴 Start Recording</button>
+                    <button class="btn-stop" id="btn-stop" onclick="stopRecording()" disabled>⏹️ Stop Recording</button>
+                </div>
+                <p id="recording-status"></p>
+                <div id="transcribed-answer" class="hidden">
+                    <p>You said: <em id="answer-text"></em></p>
+                    <button class="btn-primary" onclick="submitAnswer()">📝 Submit Answer</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ══ STEP 4: Results ══ -->
+        <section id="section-results" class="card hidden">
+            <h2>🏆 Quiz Complete!</h2>
+
+            <div class="score-grid">
+                <div class="score-box">
+                    <h3 id="overall-score"></h3>
+                    <p>Overall Score</p>
+                </div>
+                <div class="score-box">
+                    <h3 id="correct-count"></h3>
+                    <p>Correct Answers</p>
+                </div>
+                <div class="score-box">
+                    <h3 id="percentage"></h3>
+                    <p>Percentage</p>
+                </div>
+            </div>
+
+            <div id="performance-message"></div>
+
+            <h3>📋 Detailed Breakdown</h3>
+            <div id="results-breakdown"></div>
+
+            <div class="result-buttons">
+                <button class="btn-primary" onclick="retakeQuiz()">🔄 Retake Quiz</button>
+                <button class="btn-secondary" onclick="startFresh()">🆕 Start Fresh</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ── Loading Overlay ── -->
+    <div id="loading-overlay" class="hidden">
+        <div class="loader"></div>
+        <p id="loading-text">Loading...</p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

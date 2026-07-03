@@ -1,0 +1,25 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+# Source code
+*.py text
+*.js text
+*.html text
+*.css text
+*.md text
+*.json text
+*.yml text
+*.yaml text
+*.txt text
+
+# Binary files
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.mp3 binary
+*.wav binary
+*.webm binary
+*.zip binary

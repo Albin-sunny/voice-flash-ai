@@ -1,0 +1,12 @@
+groq
+gTTS
+PyPDF2
+sounddevice
+python-dotenv
+scipy
+numpy<2
+torch==2.1.0
+openai-whisper
+fastapi
+uvicorn
+python-multipart
